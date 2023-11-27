@@ -4,8 +4,8 @@ exports.up = function(knex) {
         table.increments("movie_id").primary();
         table.string("title");
         table.integer("runtime_in_minutes")
-        table.string("taring");
-        table.string("description");
+        table.string("rating");
+        table.text("description");
         table.string("image_url");
         table.timestamps(true, true);
     });
