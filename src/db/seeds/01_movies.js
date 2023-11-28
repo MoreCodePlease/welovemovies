@@ -1,9 +1,5 @@
 exports.seed = function (knex) {
-  return knex
-    .raw("TRUNCATE TABLE movies RESTART IDENTITY CASCADE")
-    .then( function () {
-      return knex("movies")
-        .insert([
+  return knex("movies").insert([
     {
       title: "Spirited Away",
       runtime_in_minutes: 125,
@@ -148,7 +144,5 @@ exports.seed = function (knex) {
       image_url:
         "https://m.media-amazon.com/images/M/MV5BN2EwM2I5OWMtMGQyMi00Zjg1LWJkNTctZTdjYTA4OGUwZjMyXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_Ratio0.6791_AL_.jpg",
     },
-    ]
-        );
-    });
+  ]);
 };
