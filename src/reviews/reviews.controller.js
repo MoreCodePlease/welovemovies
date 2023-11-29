@@ -12,26 +12,32 @@ async function reviewExists(req, res, next) {
 }
 
 async function update(req, res) {
-    const data = req.body;
+    //const data = req.body;
     const updatedReview = {
         ...res.locals.review,
         ...req.body,
         review_id: res.locals.review.review_id,
+        critic_id:res.locals.review.critic_id,
       };
-    const reviewData = await reviewsService.update(updatedReview);
+    await reviewsService.update(updatedReview);
+    const reviewData = await reviewsService.read(res.locals.review.review_id);
     const criticData = await reviewsService.readCritic(updatedReview.critic_id);
-    res.status(200).json({data: {...reviewData, critic: criticData}})
+    res.status(200).json({data: {...reviewData, critic: criticData}});
 }
 
 async function list( req, res) {
     res.json({ data: await reviewsService.list(req.params.movieId) });
 }
 
+async function destroy(req, res) {
+    await reviewsService.destroy(res.locals.review.review_id);
+    res.sendStatus(204);
+}
+
 module.exports = {
-    update: [
-        asyncErrorBoundary(reviewExists),
-        asyncErrorBoundary(update)
-    ],
-    list: asyncErrorBoundary(list) 
+    update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
+    list: [asyncErrorBoundary(list)],
+    delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)]
+
 
 }
