@@ -12,10 +12,10 @@ async function reviewExists(req, res, next) {
 }
 
 async function update(req, res) {
-    //const data = req.body;
+    const {data} = req.body;
     const updatedReview = {
         ...res.locals.review,
-        ...req.body,
+        ...data,
         review_id: res.locals.review.review_id,
         critic_id:res.locals.review.critic_id,
       };
