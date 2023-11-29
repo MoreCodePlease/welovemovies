@@ -25,30 +25,30 @@ function listShowing() {
 
 function read(movie_id) {
   return knex("movies").select("*")
-      .where("movie_id", movie_id).first();
-       
+      .where("movie_id", movie_id).first();       
+}
+
+function readReviews(movie_id) {
+  return knex("reviews").select("*")
+      .where("movie_id", movie_id);   
+}
+
+function readCritics() {
+  return knex("critics")      
 }
 
 function listPlayingTheaters(movie_id) {
   return knex("theaters")
-    .select("theaters.*")
+    .select("theaters.*", "movies_theaters.*")
     .join("movies_theaters", "theaters.theater_id", "movies_theaters.theater_id")
-    .where("movie_id", movie_id)
-     
+    .where("movies_theaters.movie_id", movie_id);
 }
 
-function listMovieReviews(movie_id) {
-    return knex("reviews")
-    .disctint("reviews.review_id")
-    .select("*")
-    .join("critics", "reviews.critic_id", "critics.critic_id")
-    .where("review.movie_id", movie_id);
-
-}
   module.exports = {
     list,
     listShowing,
     read,
+    readCritics,
     listPlayingTheaters,
-    listMovieReviews
+    readReviews
   }

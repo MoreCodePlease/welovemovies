@@ -27,13 +27,18 @@ async function listPlayingTheaters( req, res) {
 }
 
 async function listMovieReviews( req, res) {
-    res.json({ data: await moviesService.listMovieReviews(req.params.movieId) });
+    const reviewData = await moviesService.readReviews(res.locals.movie.movie_id);
+    const criticData = await moviesService.readCritics();
+    const reviewCriticData = reviewData.map(review => {
+        return {...review, critic: criticData.find(critic => critic.critic_id === review.critic_id)};
+   });
+    res.json({ data: reviewCriticData});
 }
 
 module.exports = {
     list: asyncErrorBoundary(list),
     read:[asyncErrorBoundary(movieExists),read],
     listPlayingTheaters: asyncErrorBoundary(listPlayingTheaters),
-    listMovieReviews: asyncErrorBoundary(listMovieReviews),
+    listMovieReviews: [asyncErrorBoundary(movieExists),asyncErrorBoundary(listMovieReviews)],
     movieExists: asyncErrorBoundary(movieExists)
 }

@@ -5,7 +5,6 @@ async function reviewExists(req, res, next) {
     const review = await reviewsService.read(Number(req.params.reviewId))
     if(review) {
         res.locals.review = review;
-       // res.json(review) // for testing without altering
         next();
     } else {
         next({ status: 404, message: `Review cannot be found.` });
