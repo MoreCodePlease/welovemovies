@@ -9,6 +9,13 @@ knex.migrate
   .latest()
   .then((migrations) => {
     console.log("migrations", migrations);
-    app.listen(PORT, listener);
+    
   })
   .catch(console.error);
+
+ knex.seed.run().then((response) =>{
+  console.log("seeds", app.response);
+  app.listen(PORT, listener);
+}).catch(console.error);
+ 
+
